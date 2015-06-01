@@ -285,7 +285,7 @@ function fireBullet() {
     /**/
     data.tank.bullet--;
     var dir = data.tank.deg2;
-    console.log(dir);
+    //console.log(dir);
     var vx = -Math.round(Math.sin(dir)*16*100)/100;
     var vy = -Math.round(Math.cos(dir)*16*100)/100;
 
@@ -348,14 +348,14 @@ function bulletMove(){
             var w = checkInZ(prex, prey, x, y, s);//在z形的哪一段
             if (w) console.log(w);
             switch (w) {
-                case 1:break;
-                case 2:break;
-                case 3:break;
-                case 4:break;
-                case 5:break;
-                case 6:break;
-                case 7:break;
-                case 8:break;
+                case 1:vx=-vx;x=2*(200-s)-x;break;
+                case 2:vx=-vx;x=2*(1024-200+s)-x;break;
+                case 3:vy=-vy;y=2*(200-s)-y;break;
+                case 4:vy=-vy;y=2*(200+s)-y;break;
+                case 5:vy=-vy;y=2*(1024-200-s)-y;break;
+                case 6:vy=-vy;y=2*(1024-200+s)-y;break;
+                case 7:var tmp=vx;vx=-vy;vy=-tmp;tmp=x;x=1024-s*Math.sqrt(2)-y;y=1024-s*Math.sqrt(2)-x;break;
+                case 8:var tmp=vx;vx=-vy;vy=-tmp;tmp=x;x=1024+s*Math.sqrt(2)-y;y=1024+s*Math.sqrt(2)-x;break;
             }
 
 
@@ -398,6 +398,19 @@ function checkInZ(px,py,x0,y0,s) {
         if (px<=200-s&&x0>=200-s&&((y>200-s&&y<200+s)||(y>1024-200-s&&y<1024-200+s))) return 1;
         y = (y0-py)*(1024-200+s)/(x0-px)+py;
         if (px>=1024-200+s&&x0<=1024-200+s&&((y>200-s&&y<200+s)||(y>1024-200-s&&y<1024-200+s))) return 2;
+    }
+    if (px+py!=x0+y0) {
+        //7 8
+        var tmp = 1024-s*Math.sqrt(2);
+        if (px+py<=tmp&&x0+y0>=tmp){
+            var x = ((x0-px)*(tmp-py)+px*(y0-py))/(x0+y0-px-py);
+            if (x>200-s&&x<1024-200+s) return 7;
+        }
+        tmp = 1024+s*Math.sqrt(2);
+        if (px+py>=tmp&&x0+y0<=tmp){
+            var x = ((x0-px)*(tmp-py)+px*(y0-py))/(x0+y0-px-py);
+            if (x>200-s&&x<1024-200+s) return 8;
+        }
     }
     return 0;
 }
