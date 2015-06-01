@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>
+</title>
+<script src="/_sae/channel/api.js">
+</script>
+<script type="text/javascript" src="static/js/jquery-2.1.3.min.js">
+</script>
+<style>
+
+body {
+    moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin: 0;
+    background-color: #ffc;
+    overflow: hidden;
+}
+canvas:focus {
+  outline: none;
+}
+</style>
+</head>
+<body oncontextmenu="self.event.returnValue=false" onselectstart="return false">
+<canvas id="canv" tabindex="0" width=1024 height=1024>请使用Chrome浏览器</canvas>
+</body>
+<script type="text/javascript" src="static/js/main.js">
+</script>
+<script type="text/javascript" src="static/js/draw.js">
+</script>
+<script type="text/javascript" src="static/js/event.js">
+</script>
+<script type="text/javascript" src="static/js/move.js">
+</script>
+<script type="text/javascript" src="static/js/sendData.js">
+</script>
+<script>
+
+var socket;
+openChannel = function() {
+    socket = new sae.Channel('{{url}}');
+    console.log('{{url}}');
+    socket.onopen = onOpened;
+    socket.onmessage = onMessage;
+}
+sendMessage = function(msg) {//path, params) {
+    // var i = 0;
+    // for (var p in params) {
+    //     path += (i ? '&' : '?') + p + '=' + params[p];
+    //     i++;
+    // }
+    // var xhr = new XMLHttpRequest();
+    // xhr.open('POST', path, true);
+    // xhr.send();
+    if (socket!=undefined)
+        socket.send(JSON.stringify(msg));
+};
+initialize = function() {
+    openChannel();
+}
+onOpened = function() {
+    my_id = '{{me}}';
+    my_team = '{{team}}';
+    data.tank.color = my_team;
+    data.tank.i = my_id;
+    console.log(my_id);
+}
+onMessage = function(m) {
+    var tmp = JSON.parse(m.data);
+    //console.log(m.data);
+    //if (tmp.check == undefined)
+    updateData(tmp);
+}
+setTimeout(initialize, 100);
+</script>
+<script type="text/javascript">
+
+loadImages();
+</script>
+</html>
