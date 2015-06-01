@@ -116,8 +116,11 @@ function checkKey() {
 function addTimer() {
     TIMER = setInterval(function() {
         CLOCK++;
+        data.prex = data.tank.x;
+        data.prey = data.tank.y;
         tankMove();
         checkPosition();
+
         //tankTestMove();
         tankMoveToShadow();
         drawOneFrame();

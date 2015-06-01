@@ -268,14 +268,14 @@ function checkPosition() {
         }
         var w=checkInZ(data.prex, data.prey, x, y, u);
         switch (w) {
-            case 1:x=200-u;break;
-            case 2:x=1024-200+u;break;
-            case 3:y=200-u;break;
-            case 4:y=200+u;break;
-            case 5:y=1024-200-u;break;
-            case 6:y=1024-200+u;break;
-            case 7:x=data.prex;y=data.prey;break;
-            case 8:x=data.prex;y=data.prey;break;
+            case 1:x=2*(200-u)-x;break;
+            case 2:x=2*(1024-200+u)-x;break;
+            case 3:y=2*(200-u)-y;break;
+            case 4:y=2*(200+u)-y;break;
+            case 5:y=2*(1024-200-u)-y;break;
+            case 6:y=2*(1024-200+u)-y;break;
+            case 7:var tmp=x;x=1024-u*Math.sqrt(2)-y;y=1024-u*Math.sqrt(2)-x;break;
+            case 8:var tmp=x;x=1024+u*Math.sqrt(2)-y;y=1024+u*Math.sqrt(2)-x;break;
         }
     }
 }
@@ -365,8 +365,8 @@ function bulletMove(){
                 case 4:vy=-vy;y=2*(200+s)-y;break;
                 case 5:vy=-vy;y=2*(1024-200-s)-y;break;
                 case 6:vy=-vy;y=2*(1024-200+s)-y;break;
-                case 7:var tmp=vx;vx=-vy;vy=-tmp;tmp=x;x=1024-s*Math.sqrt(2)-y;y=1024-s*Math.sqrt(2)-tmp;break;
-                case 8:var tmp=vx;vx=-vy;vy=-tmp;tmp=x;x=1024+s*Math.sqrt(2)-y;y=1024+s*Math.sqrt(2)-tmp;break;
+                case 7:var tmp=vx;vx=-vy;vy=-tmp;tmp=x;x=1024-s*Math.sqrt(2)-y;y=1024-s*Math.sqrt(2)-x;break;
+                case 8:var tmp=vx;vx=-vy;vy=-tmp;tmp=x;x=1024+s*Math.sqrt(2)-y;y=1024+s*Math.sqrt(2)-x;break;
             }
 
 

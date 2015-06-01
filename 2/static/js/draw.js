@@ -41,9 +41,9 @@ function drawOneFrame() {
    for (var p in data.bullets) {
        drawBullet(data.bullets[p]);
    }
-   // for (var p in data.tank.bullets) {
-   //     drawBullet(data.tank.bullets[p]);
-   // }
+   for (var p in data.tank.bullets) {
+       drawBullet(data.tank.bullets[p]);
+   }
    drawTank(data.tank);
    //drawTank(data.tankTest);
    // for (var p in data.tankShadows) {
