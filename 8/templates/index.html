@@ -46,7 +46,7 @@ canvas:focus {
 var socket;
 openChannel = function() {
     socket = new sae.Channel('{{url}}');
-    console.log('{{url}}');
+    //console.log('{{url}}');
     socket.onopen = onOpened;
     socket.onmessage = onMessage;
 }

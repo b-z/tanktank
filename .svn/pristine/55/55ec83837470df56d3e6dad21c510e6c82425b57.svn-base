@@ -266,17 +266,6 @@ function checkPosition() {
         if (y>1024-u) {
             y=1024-u;
         }
-        var w=checkInZ(data.prex, data.prey, x, y, u);
-        switch (w) {
-            case 1:x=200-u;break;
-            case 2:x=1024-200+u;break;
-            case 3:y=200-u;break;
-            case 4:y=200+u;break;
-            case 5:y=1024-200-u;break;
-            case 6:y=1024-200+u;break;
-            case 7:x=data.prex;y=data.prey;break;
-            case 8:x=data.prex;y=data.prey;break;
-        }
     }
 }
 
@@ -296,7 +285,7 @@ function fireBullet() {
     /**/
     data.tank.bullet--;
     var dir = data.tank.deg2;
-    //console.log(dir);
+    console.log(dir);
     var vx = -Math.round(Math.sin(dir)*16*100)/100;
     var vy = -Math.round(Math.cos(dir)*16*100)/100;
 
@@ -365,8 +354,8 @@ function bulletMove(){
                 case 4:vy=-vy;y=2*(200+s)-y;break;
                 case 5:vy=-vy;y=2*(1024-200-s)-y;break;
                 case 6:vy=-vy;y=2*(1024-200+s)-y;break;
-                case 7:var tmp=vx;vx=-vy;vy=-tmp;tmp=x;x=1024-s*Math.sqrt(2)-y;y=1024-s*Math.sqrt(2)-tmp;break;
-                case 8:var tmp=vx;vx=-vy;vy=-tmp;tmp=x;x=1024+s*Math.sqrt(2)-y;y=1024+s*Math.sqrt(2)-tmp;break;
+                case 7:var tmp=vx;vx=-vy;vy=-tmp;break;
+                case 8:var tmp=vx;vx=-vy;vy=-tmp;break;
             }
 
 

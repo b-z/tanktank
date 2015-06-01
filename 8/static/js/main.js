@@ -69,13 +69,12 @@ function init() {
    addBulletTimer = 0;
    CLOCK = 0;
    data = {
-       tank: {x: 200,y: 300,deg1: 0,deg2: 0,color: '1',speed: 0,bullet:MAXBULLET,bullets:[]},
+       tank: {x: 512,y: 512,deg1: 0,deg2: 0,color: '1',speed: 0,bullet:MAXBULLET,bullets:[]},
        tankShadows: [],
        tanks: [],
-    //    tankTest: {x: 512,y: 512,vx: 0,vy: 0,ax: 0,ay: 0,deg1: 0,deg2: 0,color: '2'},
+       tankTest: {x: 512,y: 512,vx: 0,vy: 0,ax: 0,ay: 0,deg1: 0,deg2: 0,color: '2'},
        bullets: [],
-       prex: 200,
-       prey: 300
+       players: []
    };
    console.log(data);
    MOUSEX = 512;
