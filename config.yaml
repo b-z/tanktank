@@ -1,0 +1,7 @@
+name: tanktank
+version: 2
+
+cron:
+- description: cron_check
+  url: /Check
+  schedule: "*/1 * * * *"

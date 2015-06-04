@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>
+</title>
+<script src="/_sae/channel/api.js">
+</script>
+<script type="text/javascript" src="static/js/jquery-2.1.3.min.js">
+</script>
+<style>
+
+body {
+    /*moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;*/
+    margin: 0;
+    /*background-color: #ffc;*/
+    overflow: hidden;
+}
+canvas:focus {
+  outline: none;
+}
+      #gameover {
+        position: absolute;
+      }
+      #block1 {
+        display: inline;
+        float: left;
+        text-align: left;
+      }
+      #block2 {
+        position: absolute;
+        display: inline;
+      }
+      .overcontainerDark
+      {
+        background: #000;
+        opacity: 0;
+        position: absolute;
+        z-index: 0;
+        text-align: center;
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+      }
+      .over
+      {
+        background: transparent;
+        opacity: 0;
+        position: absolute;
+        z-index: 0;
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        color: #fff;
+        text-align: center;
+      }
+      .font_style
+      {
+        font-family: Courier;
+      }
+      .title_style
+      {
+        font-family: Ravie;
+        font-size: 24px;
+        font-weight: bold;
+        font-color: #0ff;
+      }
+      b{
+        white-space: nowrap;
+        font-family: Ravie;
+        font-weight: bold;
+      }
+</style>
+</head>
+<body oncontextmenu="self.event.returnValue=false" onselectstart="return false">
+<!-- <img id="rect1" src="static/img/rect1.png" width=341 height=1024> -->
+    <div id="gameoverContainer_dark" class="overcontainerDark">
+    </div>
+    <div id="gameover" class="over font_style">
+      Welcome to "<b>I wanna be a shit</b>"!<br/>Please enter your name:
+      <input type="text" id="username" value="" onkeydown="check_name()"  class="font_style"/>
+      <input type="button" value="ok" onclick="change_name()" class="font_style"/>
+    </div>
+    <div id="block2" class="font_style">
+      <canvas id="canv" tabindex="0" width="1024px" height="1024px">Please use Chrome</canvas>
+    </div>
+    <div id="block1">
+      <div id="game_title" class="title_style"></div><br/>
+      <div id="hp" class="font_style"></div>
+      <div id="mp" class="font_style"></div>
+      <div id="score" class="font_style"></div>
+      <div id="help" class="font_style">
+      </div>
+    </div>
+<!-- <img id="rect2" src="static/img/rect2.png" width=341 height=1024> -->
+</body>
+<script type="text/javascript" src="static/js/main.js">
+</script>
+<script type="text/javascript" src="static/js/draw.js">
+</script>
+<script type="text/javascript" src="static/js/event.js">
+</script>
+<script type="text/javascript" src="static/js/move.js">
+</script>
+<script type="text/javascript" src="static/js/sendData.js">
+</script>
+<script>
+
+var socket;
+openChannel = function() {
+    socket = new sae.Channel('{{url}}');
+    console.log('{{url}}');
+    socket.onopen = onOpened;
+    socket.onmessage = onMessage;
+}
+// sendMessage = function(msg) {//path, params) {
+sendMessage = function(path, params) {
+    var i = 0;
+    for (var p in params) {
+        path += (i ? '&' : '?') + p + '=' + params[p];
+        i++;
+    }
+    // console.log(path);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', path, true);
+    xhr.send();
+    // if (socket!=undefined)
+    //     socket.send(JSON.stringify(msg));
+};
+initialize = function() {
+    openChannel();
+}
+onOpened = function() {
+    my_id = '{{me}}';
+    my_team = '{{team}}';
+    var pos = {{pos}};
+    //pos = JSON.parse(pos);
+    console.log(pos);
+    data.fpos = pos.fp;
+    data.dpos = pos.dp;
+    data.tank.color = my_team;
+    data.tank.i = my_id;
+    if (my_team=='1') {
+        data.tank.x = Math.random()*200+100;
+        data.tank.y = Math.random()*300+300;
+    } else {
+        data.tank.x = 1024-Math.random()*200-100;
+        data.tank.y = 1024-(Math.random()*300+300);
+    }
+
+    //alert(my_id);
+}
+onMessage = function(m) {
+    // console.log(m);
+    var tmp = JSON.parse(m.data);
+    // console.log(m.data);
+    //if (tmp.check == undefined)
+    updateData(tmp);
+}
+// setTimeout(initialize, 100);
+</script>
+<script type="text/javascript">
+
+loadImages();
+</script>
+</html>
