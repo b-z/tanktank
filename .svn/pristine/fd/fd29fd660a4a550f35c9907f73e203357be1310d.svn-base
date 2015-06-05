@@ -1,1 +1,0 @@
-from chatactoe import application
