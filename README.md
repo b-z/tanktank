@@ -10,11 +10,11 @@ A Multiplayer Online Tank Game
   2. start an application
   3. add the code to the application
 
-Credits:| 　|　  
-:----:|:----:|:----:
-Wang Hua**pang**| 王华清| paddywhq@163.com
-Chong Luyao| 种璐瑶| lingboxunmeng@163.com
-Zhou Bowei| 周伯威| zbwwwww@gmail.com
+Credits:| 　|　 |　
+:----:|:----:|:----:|:----:
+Wang Hua**pang**| 王华清| paddywhq@163.com| Front-end
+Chong Luyao| 种璐瑶| lingboxunmeng@163.com| Back-end
+Zhou Bowei| 周伯威| zbwwwww@gmail.com| Front-end&UI
 
 
 *2015/06/05 Tsinghua*
