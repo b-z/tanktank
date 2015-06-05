@@ -62,6 +62,7 @@ function drawOneFrame() {
         else {
             var s1 = localStorage.getItem(0);
             var s2 = data.tanks[p].score;
+            console.log(s2);
             if (Math.abs(s1-s2)>5) {
                 localStorage.setItem(0,data.tanks[p].score);
                 data.tank.score = data.tanks[p].score;

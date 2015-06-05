@@ -116,12 +116,14 @@ function updateData(d) {
         data.tankShadows[p].i = d.data[p].u_id;
         data.tankShadows[p].hp = d.data[p].hp;
         // data.tankShadows[p].f = d[p].f;
+        console.log(d.data[p].tanks.s);
 
         data.bullets = data.bullets.concat(d.data[p].bullets);
     }
-    data.fpos=d.pos.fp;
-    data.dpos=d.pos.dp;
-
+    if (d.pos!=undefined){
+        data.fpos=d.pos.fp;
+        data.dpos=d.pos.dp;
+    }
 
 //    data.tankShadows = d.tanks;
 }
@@ -393,33 +395,31 @@ function bulletMove(){
 }
 
 function checkInZ(px,py,x0,y0,s) {
-    if(s==35){
-        if (x0<=200&&y0<512){
-            if((x0-200)*(x0-200)+(y0-200)*(y0-200)<s*s)
-               return 1;
-            else
-               return 0;
-        }
-        if (x0>=1024-200&&y0>512){
-            if((x0-(1024-200))*(x0-(1024-200))+(y0-(1024-200))*(y0-(1024-200))<s*s)
-               return 2;
-            else
-               return 0;
-        }
-        if (x0<=200&&y0>512&&x0+1024-200<=y0+200){
-            if((x0-200)*(x0-200)+(y0-(1024-200))*(y0-(1024-200))<s*s)
-               return 1;
-            else
-               return 0;
-        }
-        if (x0>=1024-200&&y0<512&&x0+200>=y0+1024-200){
-            if((x0-(1024-200))*(x0-(1024-200))+(y0-200)*(y0-200)<s*s)
-               return 2;
-            else{
-               console.log(1);
-               return 0;
-               }
-        }
+    if (x0<=200&&y0<512){
+        if((x0-200)*(x0-200)+(y0-200)*(y0-200)<s*s)
+           return 1;
+        else
+           return 0;
+    }
+    if (x0>=1024-200&&y0>512){
+        if((x0-(1024-200))*(x0-(1024-200))+(y0-(1024-200))*(y0-(1024-200))<s*s)
+           return 2;
+        else
+           return 0;
+    }
+    if (x0<=200&&y0>512&&x0+1024-200<=y0+200){
+        if((x0-200)*(x0-200)+(y0-(1024-200))*(y0-(1024-200))<s*s)
+           return 1;
+        else
+           return 0;
+    }
+    if (x0>=1024-200&&y0<512&&x0+200>=y0+1024-200){
+        if((x0-(1024-200))*(x0-(1024-200))+(y0-200)*(y0-200)<s*s)
+           return 2;
+        else{
+        //    console.log(1);
+           return 0;
+           }
     }
     if (y0!=py) {
         //3 4 6 5

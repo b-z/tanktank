@@ -32,7 +32,7 @@ setInterval(function() {
 			f: data.tank.flag,
 			n: my_name,
 			i: data.tank.i,
-			s: localStorage.getItem(0)
+			s: data.tank.score
 		};
 		if (data.tank.hit.length) {
 			msg.h = data.tank.hit;
