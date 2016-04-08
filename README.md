@@ -1,6 +1,9 @@
 # tanktank
 A Multiplayer Online Tank Game
 
+UPDATE: 因为新浪要破产了，服务器都挂了，这个游戏也基本运行不了了hhhhhhhh
+
+
 ***
 * **To play the game**: Click⬇️  
   http://tanktank.sinaapp.com/ 
