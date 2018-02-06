@@ -157,6 +157,7 @@ class Tank():
 		else:
 			data.append({'u_id':u_id,'bullets':b,'tanks':t,'hp':5})
 
+		# hit
 		if h:
 			for (i,tk) in enumerate(data):
 				for (j,bl) in enumerate(h):
@@ -167,6 +168,7 @@ class Tank():
 		#						tk['tanks']['f'] = 0
 		#						fpos = pos['fp']
 		#						fpos = {'x':tk['tanks']['x'],'y':tk['tanks']['y']}
+		# goal
 		if g:
 			pos = Tank().randomPos()
 			for (i,tk) in enumerate(data):
@@ -179,7 +181,7 @@ class Tank():
 				else:
 					tk['tanks']['s'] = int(tk['tanks']['s']) - 10
 					print tk['tanks']['s'],'aa'
-		setData('pos',pos)	
+		setData('pos',pos)
 		setData('UserData',data)
 		sendData(u_id,{'data':data,'pos':pos})
 		#channel.send_message(user, json.dumps(data))
@@ -214,7 +216,7 @@ class Tank():
 			return {'fp':fpos,'dp':dpos}
 
 class Check(tornado.web.RequestHandler):
-	
+
 	def get(self):
 		data = getData('UserData')
 		for (j,t) in enumerate(data):

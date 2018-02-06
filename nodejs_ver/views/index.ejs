@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>
+    </title>
+    <style>
+        body {
+            margin: 0;
+            /*background-color: #ffc;*/
+            overflow: hidden;
+        }
+
+        canvas:focus {
+            outline: none;
+        }
+
+        #gameover {
+            position: absolute;
+        }
+
+        #block1 {
+            display: inline;
+            float: left;
+            text-align: left;
+        }
+
+        #block2 {
+            position: absolute;
+            display: inline;
+        }
+
+        .overcontainerDark {
+            background: #000;
+            opacity: 0;
+            position: absolute;
+            z-index: 0;
+            text-align: center;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+        }
+
+        .over {
+            background: transparent;
+            opacity: 0;
+            position: absolute;
+            z-index: 0;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+            color: #fff;
+            text-align: center;
+        }
+
+        .font_style {
+            font-family: Courier;
+        }
+
+        .title_style {
+            font-family: Ravie;
+            font-size: 24px;
+            font-weight: bold;
+            font-color: #0ff;
+        }
+
+        b {
+            white-space: nowrap;
+            font-family: Ravie;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body oncontextmenu="self.event.returnValue=false" onselectstart="return false">
+    <a href="https://github.com/b-z/tanktank">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67"
+            alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png">
+    </a>
+    <!-- <img id="rect1" src="img/rect1.png" width=341 height=1024> -->
+    <div id="gameoverContainer_dark" class="overcontainerDark">
+    </div>
+    <div id="gameover" class="over font_style">
+        Welcome to "<b>I wanna be a shit</b>"!<br/>Please enter your name:
+        <input type="text" id="username" value="" onkeydown="check_name()" class="font_style" />
+        <input type="button" value="ok" onclick="change_name()" class="font_style" />
+    </div>
+    <div id="block2" class="font_style">
+        <canvas id="canv" tabindex="0" width="1024px" height="1024px">Please use Chrome</canvas>
+    </div>
+    <div id="block1">
+        <div id="game_title" class="title_style"></div><br/>
+        <div id="hp" class="font_style"></div>
+        <div id="mp" class="font_style"></div>
+        <div id="score" class="font_style"></div>
+        <div id="help" class="font_style">
+        </div>
+    </div>
+    <!-- <img id="rect2" src="img/rect2.png" width=341 height=1024> -->
+</body>
+<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/draw.js"></script>
+<script type="text/javascript" src="js/event.js"></script>
+<script type="text/javascript" src="js/move.js"></script>
+<script type="text/javascript" src="js/sendData.js"></script>
+<script>
+    var socket;
+    openChannel = function() {
+        socket = io.connect();
+        // socket = new WebSocket('<%= url %>');
+        // console.log('<%= url %>');
+        onOpened();
+        socket.on('client update', onMessage);
+    }
+    // sendMessage = function(msg) {//path, params) {
+    sendMessage = function(path, params) {
+        var i = 0;
+        for (var p in params) {
+            path += (i ? '&' : '?') + p + '=' + params[p];
+            i++;
+        }
+        // console.log(path);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', path, true);
+        xhr.send();
+        // if (socket!=undefined)
+        //     socket.send(JSON.stringify(msg));
+    };
+    initialize = function() {
+        openChannel();
+    }
+    onOpened = function() {
+        my_id = '<%= me %>';
+        my_team = '<%= team %>';
+        var pos = '<%- pos %>';
+        pos = JSON.parse(pos);
+        // console.log(pos);
+        data.fpos = pos.fp;
+        data.dpos = pos.dp;
+        data.tank.color = my_team;
+        data.tank.i = my_id;
+        if (my_team == '1') {
+            data.tank.x = Math.random() * 200 + 100;
+            data.tank.y = Math.random() * 300 + 300;
+        } else {
+            data.tank.x = 1024 - Math.random() * 200 - 100;
+            data.tank.y = 1024 - (Math.random() * 300 + 300);
+        }
+
+        //alert(my_id);
+    }
+    onMessage = function(m) {
+        // console.log(m);
+        // var tmp = m.data;
+        // console.log(m.data);
+        //if (tmp.check == undefined)
+        updateData(m);
+    }
+    // setTimeout(initialize, 100);
+</script>
+
+<script type="text/javascript">
+    loadImages();
+</script>
+
+</html>
