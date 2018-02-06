@@ -3,7 +3,7 @@
 
 function loadImages() {
     IMAGE_LOADED = 0;
-    var count = 14;
+    var count = 15;
     images = {
         tank1: new Image(),
         tank2: new Image(),
@@ -15,7 +15,11 @@ function loadImages() {
         goal: new Image(),
         shit1: new Image(),
         shit2: new Image(),
-        cursor: new Image()
+        cursor: new Image(),
+        cursor_fire: new Image(),
+        heart: new Image(),
+        bullet1: new Image(),
+        bullet2: new Image(),
     };
     with(images) {
         tank1.src = 'img/tank1.png';
@@ -29,11 +33,15 @@ function loadImages() {
         shit1.src = 'img/shit1.png';
         shit2.src = 'img/shit2.png';
         cursor.src = 'img/cursor.png';
+        cursor_fire.src = 'img/cursor_fire.png';
+        heart.src = 'img/heart.png';
+        bullet1.src = 'img/bullet1.png';
+        bullet2.src = 'img/bullet2.png';
     }
     for (var p in images) {
         images[p].onload = function() {
             IMAGE_LOADED++;
-            if (IMAGE_LOADED == 11) {
+            if (IMAGE_LOADED == count) {
                 imageLoadComplete();
             }
         }
@@ -74,8 +82,8 @@ function drawOneFrame() {
             data.tank.hp = data.tanks[p].hp;
             if (data.tank.hp == 0 && died == false) {
                 die();
-                $("#mp").html("U are a shit now");
-                $("#hp").html("U are a shit now");
+                // $("#mp").html("U are a shit now");
+                // $("#hp").html("U are a shit now");
             } else if (data.tank.hp > 0 && died == true) {
                 died = false;
                 // if (my_team=='1') {
@@ -85,8 +93,8 @@ function drawOneFrame() {
                 //     data.tank.x = 1024-Math.random()*200-100;
                 //     data.tank.y = 1024-(Math.random()*300+300);
                 // }
-                $("#hp").html("Life: 5");
-                $("#mp").html("Bullets: 5");
+                $("#hp").html("Life: " + data.tank.hp);
+                $("#mp").html("Bullets: " + data.tank.bullet);
             } else if (data.tank.hp > 0)
                 $("#hp").html("Life: " + data.tank.hp);
         }
@@ -102,6 +110,7 @@ function drawOneFrame() {
         drawFlag(data.fpos.x, data.fpos.y);
     }
     drawCursor();
+    drawDieMask();
 }
 
 function drawBullet(p) {
@@ -135,6 +144,13 @@ function drawTank(p) {
     ctx.fillText('Score:' + p.score, p.x, p.y + 60, 80)
     ctx.restore();
 
+    for (var i = 0; i < p.hp; i++) {
+        var r = 25 + 15 * i;
+        var oy = r * Math.cos(p.deg2);
+        var ox = r * Math.sin(p.deg2);
+        ctx.drawImage(images.heart, p.x + ox - 10, p.y + oy - 10, 20, 20);
+    }
+
     if (p.hp == 0) {
         ctx.drawImage(images['shit' + p.color], xpos, ypos, 2048 / 32, 2048 / 32);
         return;
@@ -156,17 +172,25 @@ function drawTank(p) {
     if (p.flag) {
         ctx.drawImage(images['flag1'], p.x - 7, p.y - 45, 50, 50);
     }
+
+
 }
 
 function drawCursor() {
     var size = 80 + 15 * Math.sin(CLOCK / 5);
     var xpos = MOUSEX - size / 2;
     var ypos = MOUSEY - size / 2;
+    var b = data.tank.bullet;
+    var f = firing;
+    var c = data.tank.color;
+    for (var i = 0; i < b; i++) {
+        ctx.drawImage(images['bullet' + c], MOUSEX + 20 * i, MOUSEY, 20, 40);
+    }
     ctx.save();
     ctx.translate(xpos + size / 2, ypos + size / 2);
     ctx.rotate(-CLOCK * Math.PI / 180 * 1.5);
     ctx.translate(-xpos - size / 2, -ypos - size / 2);
-    ctx.drawImage(images.cursor, xpos, ypos, size, size);
+    ctx.drawImage(images['cursor' + ((f && b) ? '_fire' : '')], xpos, ypos, size, size);
     ctx.restore();
 }
 
@@ -251,4 +275,13 @@ function drawGoal(x, y) {
     ctx.save();
     ctx.drawImage(fi, xpos, ypos, size * 2, size);
     ctx.restore();
+}
+
+function drawDieMask() {
+    if (died) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.fillRect(0, 0, 1024, 1024);
+        ctx.restore();
+    }
 }

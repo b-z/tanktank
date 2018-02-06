@@ -21,10 +21,10 @@ function optimize() {
     $("#hp").html("Life:   5");
     $("#mp").html("Bullets:     5");
     $("#score").html("Score:    0");
-    $("#game_title").html("I wanna be a shit");
-    $("#help").html("<br/>Tutorial:<br/>↑/W:    Up<br/>↓/S:     Down<br/>←/A:   Left<br/>→/D:   Right<br/>Mouse move:   Aim<br/>Mouse click:    Shoot<br/><br/>Capture the flag to the goal with your teammates!" +
-        "<br><br>Credits:<br><a href='http://paddywhq.github.io/' target='_Blank'>Wang Huaqing</a><br><a href='http://zbww.github.io/' target='_Blank'>Zhou Bowei</a><br><a href='http://chongluyao.github.io/Homework1/' target='_Blank'>Chong Luyao</a>" +
-        "<br><br>And...how about<br><a href='https://github.com/zbww/tanktank' target='_Blank'>give a star on GitHub</a>?"
+    $("#game_title").html("");
+    $("#help").html("<br/>↑/W:    Up<br/>↓/S:     Down<br/>←/A:   Left<br/>→/D:   Right<br/>Mouse move:   Aim<br/>Mouse click:    Shoot<br/><br/>Capture the flag to the goal with your teammates!" +
+        "<br><br>Credits:<br><a href='http://paddywhq.github.io/' target='_Blank'>Wang Huaqing</a><br><a href='http://b-z.github.io/' target='_Blank'>Zhou Bowei</a><br><a href='http://chongluyao.github.io/Homework1/' target='_Blank'>Chong Luyao</a>" +
+        "<br>"
     );
     $('#gameoverContainer_dark').css('z-index', -100);
 

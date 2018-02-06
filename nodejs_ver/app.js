@@ -70,6 +70,7 @@ io.on('connection', function(socket) {
         // console.log(msg.i);
         var data = getData('UserData');
         data[msg.i].hp = 5;
+        console.log(data[msg.i]);
         setData('UserData', data);
         sendData(msg.i, data);
     });
