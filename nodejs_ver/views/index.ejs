@@ -6,70 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>
     </title>
-    <style>
-        body {
-            margin: 0;
-            /*background-color: #ffc;*/
-            overflow: hidden;
-        }
-
-        canvas:focus {
-            outline: none;
-        }
-
-        #gameover {
-            position: absolute;
-        }
-
-        #block1 {
-            display: inline;
-            float: left;
-            text-align: left;
-        }
-
-        #block2 {
-            position: absolute;
-            display: inline;
-        }
-
-        .overcontainerDark {
-            background: #000;
-            opacity: 0;
-            position: absolute;
-            z-index: 0;
-            text-align: center;
-            -webkit-transition: all 0.3s ease;
-            -moz-transition: all 0.3s ease;
-        }
-
-        .over {
-            background: transparent;
-            opacity: 0;
-            position: absolute;
-            z-index: 0;
-            -webkit-transition: all 0.3s ease;
-            -moz-transition: all 0.3s ease;
-            color: #fff;
-            text-align: center;
-        }
-
-        .font_style {
-            font-family: Courier;
-        }
-
-        .title_style {
-            font-family: Ravie;
-            font-size: 24px;
-            font-weight: bold;
-            font-color: #0ff;
-        }
-
-        b {
-            white-space: nowrap;
-            font-family: Ravie;
-            font-weight: bold;
-        }
-    </style>
+    <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body oncontextmenu="self.event.returnValue=false" onselectstart="return false">
@@ -99,7 +36,7 @@
     <!-- <img id="rect2" src="img/rect2.png" width=341 height=1024> -->
 </body>
 <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+<script type="text/javascript" src="js/socket.io.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/draw.js"></script>
 <script type="text/javascript" src="js/event.js"></script>
@@ -107,58 +44,68 @@
 <script type="text/javascript" src="js/sendData.js"></script>
 <script>
     var socket;
-    openChannel = function() {
-        socket = io.connect();
-        // socket = new WebSocket('<%= url %>');
-        // console.log('<%= url %>');
-        onOpened();
-        socket.on('client update', onMessage);
-    }
-    // sendMessage = function(msg) {//path, params) {
-    sendMessage = function(path, params) {
-        var i = 0;
-        for (var p in params) {
-            path += (i ? '&' : '?') + p + '=' + params[p];
-            i++;
-        }
-        // console.log(path);
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', path, true);
-        xhr.send();
-        // if (socket!=undefined)
-        //     socket.send(JSON.stringify(msg));
-    };
-    initialize = function() {
-        openChannel();
-    }
-    onOpened = function() {
-        my_id = '<%= me %>';
-        my_team = '<%= team %>';
-        var pos = '<%- pos %>';
-        pos = JSON.parse(pos);
-        // console.log(pos);
-        data.fpos = pos.fp;
-        data.dpos = pos.dp;
-        data.tank.color = my_team;
-        data.tank.i = my_id;
-        if (my_team == '1') {
-            data.tank.x = Math.random() * 200 + 100;
-            data.tank.y = Math.random() * 300 + 300;
+    var enter_game = function() {
+        if (localStorage.getItem('tank_name') != undefined) {
+            $('#gameover, #gameoverContainer_dark').remove();
+            change_name(localStorage.getItem('tank_name'));
         } else {
-            data.tank.x = 1024 - Math.random() * 200 - 100;
-            data.tank.y = 1024 - (Math.random() * 300 + 300);
+            enter_name();
         }
 
-        //alert(my_id);
+        openChannel = function() {
+            socket = io.connect();
+            // socket = new WebSocket('<%= url %>');
+            // console.log('<%= url %>');
+            onOpened();
+            socket.on('client update', onMessage);
+        }
+        // sendMessage = function(msg) {//path, params) {
+        sendMessage = function(path, params) {
+            var i = 0;
+            for (var p in params) {
+                path += (i ? '&' : '?') + p + '=' + params[p];
+                i++;
+            }
+            // console.log(path);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', path, true);
+            xhr.send();
+            // if (socket!=undefined)
+            //     socket.send(JSON.stringify(msg));
+        };
+        onOpened = function() {
+            my_id = '<%= me %>';
+            my_team = '<%= team %>';
+            var pos = '<%- pos %>';
+            pos = JSON.parse(pos);
+            // console.log(pos);
+            data.fpos = pos.fp;
+            data.dpos = pos.dp;
+            data.tank.color = my_team;
+            data.tank.i = my_id;
+            if (my_team == '1') {
+                data.tank.x = Math.random() * 200 + 100;
+                data.tank.y = Math.random() * 300 + 300;
+            } else {
+                data.tank.x = 1024 - Math.random() * 200 - 100;
+                data.tank.y = 1024 - (Math.random() * 300 + 300);
+            }
+
+            //alert(my_id);
+        }
+        onMessage = function(m) {
+            // console.log(m);
+            // var tmp = m.data;
+            // console.log(m.data);
+            //if (tmp.check == undefined)
+            updateData(m);
+        }
+        // setTimeout(initialize, 100);
+        // initialize = function() {
+        openChannel();
+        // }
+
     }
-    onMessage = function(m) {
-        // console.log(m);
-        // var tmp = m.data;
-        // console.log(m.data);
-        //if (tmp.check == undefined)
-        updateData(m);
-    }
-    // setTimeout(initialize, 100);
 </script>
 
 <script type="text/javascript">

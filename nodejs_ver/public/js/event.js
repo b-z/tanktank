@@ -56,7 +56,7 @@ function enter_name() {
     $('#gameover').css('z-index', 3);
     $('#gameoverContainer_dark').css('width', SCREEN_WIDTH + 'px');
     $('#gameoverContainer_dark').css('height', SCREEN_HEIGHT + 'px');
-    $('#gameoverContainer_dark').css('opacity', 0.7);
+    $('#gameoverContainer_dark').css('opacity', 1);
     $('#gameoverContainer_dark').css('z-index', 1);
 }
 

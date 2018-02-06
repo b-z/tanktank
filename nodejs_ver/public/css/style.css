@@ -1,0 +1,62 @@
+body {
+	margin: 0;
+	/*background-color: #ffc;*/
+	overflow: hidden;
+}
+
+canvas:focus {
+	outline: none;
+}
+
+#gameover {
+	position: absolute;
+}
+
+#block1 {
+	display: inline;
+	float: left;
+	text-align: left;
+}
+
+#block2 {
+	position: absolute;
+	display: inline;
+}
+
+.overcontainerDark {
+	background: #000;
+	/* opacity: 0; */
+	position: absolute;
+	z-index: 0;
+	text-align: center;
+	/* -webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease; */
+}
+
+.over {
+	background: transparent;
+	/* opacity: 0; */
+	position: absolute;
+	z-index: 0;
+	/* -webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease; */
+	color: #fff;
+	text-align: center;
+}
+
+.font_style {
+	font-family: Courier;
+}
+
+.title_style {
+	font-family: Ravie;
+	font-size: 24px;
+	font-weight: bold;
+	font-color: #0ff;
+}
+
+b {
+	white-space: nowrap;
+	font-family: Ravie;
+	font-weight: bold;
+}

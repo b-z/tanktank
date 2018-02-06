@@ -94,7 +94,7 @@ function imageLoadComplete() {
         },
         g: 0
     };
-    enter_name();
+    enter_game();
 }
 
 function optimizeCanvas() {
@@ -130,25 +130,33 @@ function init() {
     addEvent();
     addTimer();
     optimizeCanvas();
-    setTimeout(initialize, 100);
+    // setTimeout(initialize, 100);
     //还需要显示游戏指导什么的
     if (!checkLocalStorage()) {
         newPlayer();
     }
 }
 
-function change_name() {
-    if ($("#username").val().length == 0) {
-        alert("Please Enter Your Name :)");
-        return;
+function change_name(name) {
+    if (name == undefined) {
+        if ($("#username").val().length == 0) {
+            alert("Please Enter Your Name :)");
+            return;
+        }
+        data.tank.name = $("#username").val();
+        my_name = data.tank.name;
+        $('#canv').css('z-index', 1);
+        // $('#gameover').css('opacity', 0);
+        // $('#gameover').css('z-index', 0);
+        // $('#gameoverContainer_dark').css('opacity', 0);
+        // $('#gameoverContainer_dark').css('z-index', 0);
+        $('#gameover, #gameoverContainer_dark').remove();
+        localStorage.setItem('tank_name', my_name);
+    } else {
+        data.tank.name = name;
+        my_name = data.tank.name;
+        $('#canv').css('z-index', 1);
     }
-    data.tank.name = $("#username").val();
-    my_name = data.tank.name;
-    $('#canv').css('z-index', 1);
-    $('#gameover').css('opacity', 0);
-    $('#gameover').css('z-index', 0);
-    $('#gameoverContainer_dark').css('opacity', 0);
-    $('#gameoverContainer_dark').css('z-index', 0);
     init();
     // loadImages();
 
