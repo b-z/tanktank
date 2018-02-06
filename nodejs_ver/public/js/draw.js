@@ -82,8 +82,6 @@ function drawOneFrame() {
             data.tank.hp = data.tanks[p].hp;
             if (data.tank.hp == 0 && died == false) {
                 die();
-                // $("#mp").html("U are a shit now");
-                // $("#hp").html("U are a shit now");
             } else if (data.tank.hp > 0 && died == true) {
                 died = false;
                 // if (my_team=='1') {
@@ -93,6 +91,8 @@ function drawOneFrame() {
                 //     data.tank.x = 1024-Math.random()*200-100;
                 //     data.tank.y = 1024-(Math.random()*300+300);
                 // }
+                data.tank.bullet = 5;
+                data.tank.speed = 0;
                 $("#hp").html("Life: " + data.tank.hp);
                 $("#mp").html("Bullets: " + data.tank.bullet);
             } else if (data.tank.hp > 0)
@@ -145,9 +145,10 @@ function drawTank(p) {
     ctx.restore();
 
     for (var i = 0; i < p.hp; i++) {
-        var r = 25 + 15 * i;
-        var oy = r * Math.cos(p.deg2);
-        var ox = r * Math.sin(p.deg2);
+        var r = 40;
+        var t = p.deg2 + 2 * i * Math.PI / p.hp;
+        var oy = r * Math.cos(t);
+        var ox = r * Math.sin(t);
         ctx.drawImage(images.heart, p.x + ox - 10, p.y + oy - 10, 20, 20);
     }
 
