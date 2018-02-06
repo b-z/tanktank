@@ -37,7 +37,7 @@ app.get('/', function(req, res) {
     //     res.cookie('u', _uuid());
     // }
     var u_id = _uuid();
-    var url = ''; //createChannel(u_id);
+    var url = createChannel(u_id);
 
     var team = joinTeam(u_id); //Tank().joinTeam(u_id);
     var pos = getData('pos');
@@ -48,12 +48,15 @@ app.get('/', function(req, res) {
         team: team,
         pos: JSON.stringify(pos)
     });
+    GAME.u_id_now = u_id;
 });
 
 io.on('connection', function(socket) {
-    console.log('a user connected');
+    console.log('a user connected', socket.id);
+    GAME.sockets[socket.id] = GAME.u_id_now;
     socket.on('disconnect', function(msg) {
-        console.log('user disconnected', msg);
+        console.log('user disconnected', socket.id);
+        removePlayer(socket.id);
     });
     socket.on('update tank', function(msg) {
         // console.log(msg);
@@ -75,8 +78,14 @@ io.on('connection', function(socket) {
 app.use('/', routes);
 
 var GAME = {
-
+    sockets: {}
 };
+
+function removePlayer(sid) {
+    var uid = GAME.sockets[sid];
+    delete GAME.UserData[uid];
+    delete GAME.sockets[sid];
+}
 
 function setData(key, value) {
     GAME[key] = value;
@@ -175,9 +184,9 @@ function _uuid() {
     });
 }
 
-// function createChannel(id) {
-//     return 'ws://localhost:8080/';
-// }
+function createChannel(id) {
+    return '';//'ws://localhost:8080/';
+}
 
 function joinTeam(u_id) {
     var data = getData('UserData');
