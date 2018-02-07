@@ -32,7 +32,8 @@ setInterval(function() {
             f: data.tank.flag,
             n: my_name,
             i: data.tank.i,
-            s: data.tank.score
+            s: data.tank.score,
+            su: data.tank.super
         };
         if (data.tank.hit.length) {
             msg.h = data.tank.hit;

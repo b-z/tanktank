@@ -70,7 +70,7 @@ io.on('connection', function(socket) {
         // console.log(msg.i);
         var data = getData('UserData');
         data[msg.i].hp = 5;
-        console.log(data[msg.i]);
+        // console.log(data[msg.i]);
         setData('UserData', data);
         sendData(msg.i, data);
     });
@@ -169,7 +169,7 @@ function updatePosition(u_id, msg) {
     // ???
     setData('pos', pos);
     setData('UserData', data);
-
+    // console.log(data);
     sendData(u_id, {'data': data, 'pos': pos});
 }
 
@@ -200,6 +200,7 @@ function joinTeam(u_id) {
             t2++;
         }
     }
+    console.log(t1, t2);
     if (t1 > t2) {
         return '2';
     } else if (t1 < t2) {

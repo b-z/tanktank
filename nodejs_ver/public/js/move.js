@@ -23,6 +23,7 @@ function tankMoveToShadow() {
                 data.tanks[q].hp = data.tankShadows[p].hp;
                 data.tanks[q].flag = data.tankShadows[p].f;
                 data.tanks[q].score = data.tankShadows[p].s;
+                data.tanks[q].super = data.tankShadows[p].su;
 
                 m = 1;
                 var u1 = 6,
@@ -86,6 +87,7 @@ function tankMoveToShadow() {
                 hp: data.tankShadows[p].hp,
                 flag: data.tankShadows[p].f,
                 score: data.tankShadows[p].s,
+                super: data.tankShadows[p].su,
             });
         }
     }
@@ -306,7 +308,22 @@ function fireBullet() {
     if (!firing) return 'not firing';
     /**/
     data.tank.bullet--;
-    var dir = data.tank.deg2;
+    fireOneBullet(data.tank.deg2);
+    if (data.tank.super) {
+        fireOneBullet(data.tank.deg2+0.05);
+        fireOneBullet(data.tank.deg2-0.05);
+    }
+
+    if (data.tank.bullet) {
+        bulletTimer = 10;
+        $("#mp").html("Bullets: " + data.tank.bullet);
+    } else {
+        addBulletTimer = 60;
+        $("#mp").html("Adding bullet");
+    }
+}
+
+function fireOneBullet(dir) {
     //console.log(dir);
     var vx = -Math.round(Math.sin(dir) * 16 * 100) / 100;
     var vy = -Math.round(Math.cos(dir) * 16 * 100) / 100;
@@ -319,13 +336,6 @@ function fireBullet() {
         vy: vy,
         f: 120
     });
-    if (data.tank.bullet) {
-        bulletTimer = 10;
-        $("#mp").html("Bullets: " + data.tank.bullet);
-    } else {
-        addBulletTimer = 60;
-        $("#mp").html("Adding bullet");
-    }
 }
 
 function bulletMove() {
@@ -639,12 +649,14 @@ function checkGetFlag() {
     }
     if (data.tank.flag == 1 && Math.abs(data.tank.x - data.dpos.x) <= 35 && Math.abs(data.tank.y - data.dpos.y) <= 35) {
         data.g = 1;
+        data.tank.super = true;
     }
 }
 
 function die() {
     died = true;
     data.tank.flag = 0;
+    data.tank.super = false;
     setTimeout(function() {
         //        died = false;
         //        data.tank.hp = 5;

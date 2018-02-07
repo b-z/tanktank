@@ -71,10 +71,10 @@ function drawOneFrame() {
             var s1 = localStorage.getItem(0);
             var s2 = data.tanks[p].score;
             // console.log(s2);
-            if (Math.abs(s1 - s2) > 5) {
+            if (Math.abs(s1 - s2) > 20) {
                 localStorage.setItem(0, data.tanks[p].score);
                 data.tank.score = data.tanks[p].score;
-                console.log(s1 + 'hehe' + s2);
+                // console.log(s1 + 'hehe' + s2); // TODO ???
             } else if (data.tanks[p].hp < data.tank.hp) {
                 localStorage.setItem(0, localStorage.getItem(0) - 1);
                 data.tank.score = localStorage.getItem(0);
@@ -147,6 +147,8 @@ function drawTank(p) {
     for (var i = 0; i < p.hp; i++) {
         var r = 40;
         var t = p.deg2 + 2 * i * Math.PI / p.hp;
+        if (p.super) t += CLOCK / 10 * (p.color == '1' ? 1 : -1);
+        // r *= Math.sin(CLOCK/10);
         var oy = r * Math.cos(t);
         var ox = r * Math.sin(t);
         ctx.drawImage(images.heart, p.x + ox - 10, p.y + oy - 10, 20, 20);
@@ -193,6 +195,26 @@ function drawCursor() {
     ctx.translate(-xpos - size / 2, -ypos - size / 2);
     ctx.drawImage(images['cursor' + ((f && b) ? '_fire' : '')], xpos, ypos, size, size);
     ctx.restore();
+    if (data.tank.super) {
+        var r = Math.sqrt(Math.pow(MOUSEX - data.tank.x, 2) + Math.pow(MOUSEY - data.tank.y, 2));
+        size /= 2;
+        xpos = data.tank.x - size / 2 - r * Math.sin(data.tank.deg2 + 0.05);
+        ypos = data.tank.y - size / 2 - r * Math.cos(data.tank.deg2 + 0.05);
+        ctx.save();
+        ctx.translate(xpos + size / 2, ypos + size / 2);
+        ctx.rotate(-CLOCK * Math.PI / 180 * 1.5);
+        ctx.translate(-xpos - size / 2, -ypos - size / 2);
+        ctx.drawImage(images['cursor' + ((f && b) ? '_fire' : '')], xpos, ypos, size, size);
+        ctx.restore();
+        xpos = data.tank.x - size / 2 - r * Math.sin(data.tank.deg2 - 0.05);
+        ypos = data.tank.y - size / 2 - r * Math.cos(data.tank.deg2 - 0.05);
+        ctx.save();
+        ctx.translate(xpos + size / 2, ypos + size / 2);
+        ctx.rotate(-CLOCK * Math.PI / 180 * 1.5);
+        ctx.translate(-xpos - size / 2, -ypos - size / 2);
+        ctx.drawImage(images['cursor' + ((f && b) ? '_fire' : '')], xpos, ypos, size, size);
+        ctx.restore();
+    }
 }
 
 function drawBackground() {
