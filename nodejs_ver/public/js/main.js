@@ -60,7 +60,8 @@ function imageLoadComplete() {
         d: false,
         l: false,
         r: false
-    }
+    };
+    users = {}; // 用来判断掉线
 
     data = {
         tank: {
@@ -71,7 +72,7 @@ function imageLoadComplete() {
             color: '1',
             speed: 0,
             bullet: MAXBULLET,
-            bullets: [],
+            bullets: {},
             i: '',
             hit: [],
             name: my_name,
@@ -81,7 +82,7 @@ function imageLoadComplete() {
         tankShadows: [],
         tanks: [],
         //    tankTest: {x: 512,y: 512,vx: 0,vy: 0,ax: 0,ay: 0,deg1: 0,deg2: 0,color: '2'},
-        bullets: [],
+        bullets: {},
         prex: 200,
         prey: 300,
         fpos: {
@@ -95,6 +96,20 @@ function imageLoadComplete() {
         g: 0
     };
     enter_game();
+    setInterval(function() {
+        var time = (new Date()).valueOf();
+        for (var u in users) {
+            if (time - users[u] >= 1000) {
+                for (var i = data.tanks.length - 1; i >= 0; i--) {
+                    if (data.tanks[i].i == u) {
+                        data.tanks.splice(i, 1);
+                    }
+                }
+                delete data.tankShadows[u];
+                delete users[u];
+            }
+        }
+    }, 1000);
 }
 
 function optimizeCanvas() {

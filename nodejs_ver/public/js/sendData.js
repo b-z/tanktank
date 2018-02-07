@@ -53,4 +53,4 @@ setInterval(function() {
         });
         //console.log(msg.i);
     }
-}, 100);
+}, 50);

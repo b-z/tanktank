@@ -19,11 +19,11 @@ function tankMoveToShadow() {
 
         for (var q in data.tanks) {
             if (data.tanks[q].i == data.tankShadows[p].i) {
-                data.tanks[q].deg2 = data.tankShadows[p].d;
+                data.tanks[q].deg2 = data.tankShadows[p].deg2;
                 data.tanks[q].hp = data.tankShadows[p].hp;
-                data.tanks[q].flag = data.tankShadows[p].f;
-                data.tanks[q].score = data.tankShadows[p].s;
-                data.tanks[q].super = data.tankShadows[p].su;
+                data.tanks[q].flag = data.tankShadows[p].flag;
+                data.tanks[q].score = data.tankShadows[p].score;
+                data.tanks[q].super = data.tankShadows[p].super;
 
                 m = 1;
                 var u1 = 6,
@@ -82,12 +82,12 @@ function tankMoveToShadow() {
                 ax: 0,
                 ay: 0,
                 deg1: 0,
-                color: data.tankShadows[p].c,
-                name: data.tankShadows[p].n,
+                color: data.tankShadows[p].color,
+                name: data.tankShadows[p].name,
                 hp: data.tankShadows[p].hp,
-                flag: data.tankShadows[p].f,
-                score: data.tankShadows[p].s,
-                super: data.tankShadows[p].su,
+                flag: data.tankShadows[p].flag,
+                score: data.tankShadows[p].score,
+                super: data.tankShadows[p].super,
             });
         }
     }
@@ -106,23 +106,47 @@ function tankMoveToShadow() {
 }
 
 function updateData(d) {
-    data.bullets = [];
-    data.tankShadows = {};
-    //console.log(d.pos.fp);
-    for (var p in d.data) {
-        // console.log(d[p].hp);
-        data.tankShadows[p] = d.data[p].tanks;
-        data.tankShadows[p].i = p;
-        data.tankShadows[p].hp = d.data[p].hp;
-        // data.tankShadows[p].f = d[p].f;
-        // console.log(d.data[p].tanks.s);
+    // console.log(d);
 
-        data.bullets = data.bullets.concat(d.data[p].bullets);
+    // data.bullets = [];
+    // data.tankShadows = {};
+    //console.log(d.pos.fp);
+    var p = d.u_id;
+    // for (var p in d.data) {
+    // console.log(d[p].hp);
+    users[p] = (new Date()).valueOf();
+
+    for (var i in data.bullets) {
+        if (data.bullets[i].f < 0 || data.bullets[i].u_id == p) {
+            delete data.bullets[i];
+        }
     }
+
+    if (!d.data) return;
+    data.tankShadows[p] = d.data.tanks;
+    data.tankShadows[p].color = d.data.tanks.c;
+    data.tankShadows[p].name = d.data.tanks.n;
+    data.tankShadows[p].super = d.data.tanks.su;
+    data.tankShadows[p].score = d.data.tanks.s;
+    data.tankShadows[p].deg2 = d.data.tanks.d;
+    data.tankShadows[p].flag = d.data.tanks.f;
+
+    data.tankShadows[p].i = p;
+    data.tankShadows[p].hp = d.data.hp;
+    // data.tankShadows[p].f = d[p].f;
+    // console.log(d.data.tanks.s);
+
+    // data.bullets = data.bullets.concat(d.data.bullets);
+    for (var i in d.data.bullets) {
+        data.bullets[i] = d.data.bullets[i];
+        data.bullets[i].u_id = p;
+    }
+    // }
     if (d.pos != undefined) {
         data.fpos = d.pos.fp;
         data.dpos = d.pos.dp;
     }
+    // console.log(data.bullets);
 
     //    data.tankShadows = d.tanks;
 }
@@ -310,8 +334,8 @@ function fireBullet() {
     data.tank.bullet--;
     fireOneBullet(data.tank.deg2);
     if (data.tank.super) {
-        fireOneBullet(data.tank.deg2+0.05);
-        fireOneBullet(data.tank.deg2-0.05);
+        fireOneBullet(data.tank.deg2 + 0.05);
+        fireOneBullet(data.tank.deg2 - 0.05);
     }
 
     if (data.tank.bullet) {
@@ -328,18 +352,22 @@ function fireOneBullet(dir) {
     var vx = -Math.round(Math.sin(dir) * 16 * 100) / 100;
     var vy = -Math.round(Math.cos(dir) * 16 * 100) / 100;
 
-    data.tank.bullets.push({
+    var id = '' + Math.random();
+
+    data.tank.bullets[id] = {
         x: Math.round(data.tank.x * 100) / 100,
         y: Math.round(data.tank.y * 100) / 100,
         color: data.tank.color,
         vx: vx,
         vy: vy,
-        f: 120
-    });
+        f: 120,
+        id: id
+    };
 }
 
 function bulletMove() {
     for (var p in data.bullets) { //对其他玩家的子弹进行插值
+        // continue;
         if (typeof(data.bullets[p]) != 'object') continue;
         with(data.bullets[p]) {
             var prex = x; //记录上一帧的xy
@@ -434,6 +462,7 @@ function bulletMove() {
                     y = prey;
                     break;
             }
+            // console.log(x-prex, y-prey);
         }
     }
     for (var p in data.tank.bullets) { //自己的子弹，进行各种判定
@@ -534,9 +563,9 @@ function bulletMove() {
 
         }
     }
-    for (var p = data.tank.bullets.length - 1; p >= 0; p--) { //删除自己超时的子弹//还要加上已命中坦克的子弹
+    for (var p in data.tank.bullets) { //删除自己超时的子弹//还要加上已命中坦克的子弹
         if (data.tank.bullets[p].f == 0) {
-            data.tank.bullets.splice(p, 1);
+            delete data.tank.bullets[p];
         }
     }
 }
@@ -615,14 +644,15 @@ function checkInZ(px, py, x0, y0, s) {
 }
 
 function checkHit() {
-    for (var b = data.tank.bullets.length - 1; b >= 0; b--) {
+    for (var b in data.tank.bullets) {
         for (var t in data.tanks) {
             //console.log(data.tanks[t]);
             if (data.tank.bullets[b] != undefined && data.tank.bullets[b].f <= 115) {
                 if (Math.abs(data.tanks[t].x - data.tank.bullets[b].x) <= 35 &&
                     Math.abs(data.tanks[t].y - data.tank.bullets[b].y) <= 35) {
                     // console.log(data.tanks[t]);
-                    data.tank.bullets.splice(b, 1);
+                    delete data.tank.bullets[b];
+                    // data.tank.bullets[b].f = 1;
                     data.tank.hit.push(data.tanks[t].i);
                     if (data.tanks[t].hp > 0) {
                         localStorage.setItem(0, localStorage.getItem(0) - (-1));

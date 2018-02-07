@@ -53,21 +53,21 @@ function drawOneFrame() {
     for (var p in data.bullets) {
         drawBullet(data.bullets[p]);
     }
-    for (var p in data.tank.bullets) {
-        drawBullet(data.tank.bullets[p]);
-    }
+    // for (var p in data.tank.bullets) {
+    //     drawBullet(data.tank.bullets[p]);
+    // }
     drawGoal(data.dpos.x, data.dpos.y);
 
     drawTank(data.tank);
-    //drawTank(data.tankTest);
+    // drawTank(data.tankTest);
     // for (var p in data.tankShadows) {
     //     drawTank(data.tankShadows[p]);
     // }
     for (var p in data.tanks) {
         //    console.log(data.tanks[p]);
-        if (data.tanks[p].i != my_id)
+        if (data.tanks[p].i != my_id) {
             drawTank(data.tanks[p]);
-        else {
+        } else {
             var s1 = localStorage.getItem(0);
             var s2 = data.tanks[p].score;
             // console.log(s2);
@@ -76,8 +76,10 @@ function drawOneFrame() {
                 data.tank.score = data.tanks[p].score;
                 // console.log(s1 + 'hehe' + s2); // TODO ???
             } else if (data.tanks[p].hp < data.tank.hp) {
+                // 掉血
                 localStorage.setItem(0, localStorage.getItem(0) - 1);
                 data.tank.score = localStorage.getItem(0);
+                data.tank.super = false;
             }
             data.tank.hp = data.tanks[p].hp;
             if (data.tank.hp == 0 && died == false) {

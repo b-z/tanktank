@@ -118,6 +118,7 @@ function updatePosition(u_id, msg) {
         b = msg.b;
         delete msg.b;
     }
+    // console.log(u_id, b);
     if (msg.h) {
         h = msg.h;
         delete msg.h;
@@ -147,6 +148,10 @@ function updatePosition(u_id, msg) {
 
     // hit
     for (var i = 0; i < h.length; i++) {
+        if (!data[h[i]]) {
+            delete GAME.UserData[h[i]];
+            return;
+        }
         if (data[h[i]].hp > 0) {
             data[h[i]].hp--;
         }
@@ -170,7 +175,8 @@ function updatePosition(u_id, msg) {
     setData('pos', pos);
     setData('UserData', data);
     // console.log(data);
-    sendData(u_id, {'data': data, 'pos': pos});
+    sendData(u_id, {'u_id': u_id, 'data': data[u_id], 'pos': pos});
+    // console.log(u_id, data[u_id].bullets);
 }
 
 function _uuid() {
